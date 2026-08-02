@@ -1,6 +1,6 @@
 # ubuntu-post-install
 
-> [!CAUTION]
+> [!WARNING]
 > Este repo esta siendo modificado para el uso de debian con entorno KDE.
 
 ## Descripcion
@@ -28,3 +28,5 @@ agregar al archivo `/etc/apt/source.list` los siguientes sources:
 - `contrib`
 - `non-free`
 
+> [!NOTE]
+> Para mas info ver la [wiki](https://www.ejemplo.com](https://github.com/tinchos/debian-post-install/wiki))
