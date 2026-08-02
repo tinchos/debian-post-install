@@ -29,4 +29,4 @@ agregar al archivo `/etc/apt/source.list` los siguientes sources:
 - `non-free`
 
 > [!NOTE]
-> Para mas info ver la [wiki](https://www.ejemplo.com](https://github.com/tinchos/debian-post-install/wiki))
+> Para mas info ver la [wiki](../../wiki)
