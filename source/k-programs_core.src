@@ -5,7 +5,6 @@ synaptic
 mawk
 gpg
 coreutils
-awk
 apt-transport-https
 ca-certificates
 build-essential
