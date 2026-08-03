@@ -73,7 +73,8 @@ function test_func() {
   ## test: instalado
   echo -e "${GREEN}${INSTALADO//\$app/$app}${NC}" && sleep 3
   ## test: ya existe
-  echo -e "${GREEN}${EXISTE//\$app/$app}${NC}" && sleep 3
+  echo -e "${GREEN}${EXISTE//\$app/$app $version}${NC}" && sleep 3
+  #echo -e "${GREEN}${EXISTE//\$app/$app $version}${NC}"
   ## test:
   echo -e "${YELLOW}${EXISTE}${NC}" && sleep 3
 }
@@ -81,16 +82,16 @@ function test_func() {
 ## === Func Aplicaciones === 
 function inst_docker() {
 	app="Docker"
-  echo -e "💬${BLUE}${TITULO//\$app/$app}${NC}"
+  echo -e "${BLUE}${TITULO//\$app/$app}${NC}"
   if ! command -v docker &> /dev/null; then
-    echo -e "🚨 ${RED}${NOEXISTE//\$app/$app}${NC}"
+    echo -e "${RED}${NOEXISTE//\$app/$app}${NC}"
     curl -fsSL https://get.docker.com -o get-docker.sh
     sudo sh get-docker.sh
-    echo -e "✅ ${GREEN}${INSTALADO//\$app/$app}${NC}"
+    echo -e "${GREEN}${INSTALADO//\$app/$app}${NC}"
     rm -f get-docker.sh
   else
     version=$(docker version --format '{{.Server.Version}}')
-    echo -e "✅ ${GREEN}${EXISTE//\$app/$app $version}${NC}"
+    echo -e "${GREEN}${EXISTE//\$app/$app $version}${NC}"
   fi
   # Verifica si el usuario esta en el grupo docker
   if ! groups "$USER" | grep -qw docker; then
@@ -101,115 +102,108 @@ function inst_docker() {
   fi
 }
 function inst_kube() {
-  echo -e "💬 ${BLUE}## Verificando Kubernetes ##${NC}"
+  app="Kubectl"
+  echo -e "${BLUE}${TITULO//\$app/$app}${NC}"
   if ! command -v kubectl &> /dev/null; then
-    echo -e "🚨 ${RED}kubectl no esta instalado${NC}"
+    echo -e "${RED}${NOEXISTE//\$app/$app}${NC}"
     curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
     sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
     rm -f kubectl
-    echo -e "✅ ${GREEN}kubectl se instalo satisfactoriamente${NC}"
+    echo -e "${GREEN}${INSTALADO//\$app/$app}${NC}"
   else
     version=$(kubectl version --client=true | head -n 1 | awk '{print $3}')
-    echo -e "✅ ${GREEN}kubectl $version ya esta instalado${NC}"
+    echo -e "${GREEN}${EXISTE//\$app/$app $version}${NC}"
   fi
 }
 function inst_terra() {
-  echo -e "💬 ${BLUE}## Verificando Terraform ##${NC}"
+  app="Terraform"
+  echo -e "${BLUE}${TITULO//\$app/$app}${NC}"
   if ! command -v terraform &> /dev/null; then
-    echo -e "🚨 ${RED}terraform no está instalado${NC}"
+    echo -e "${RED}${NOEXISTE//\$app/$app}${NC}"
     wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
     sudo apt update && sudo apt install terraform -y
-    echo -e "✅ ${GREEN} Terraform se instaló satisfactoriamente${NC}"
+    echo -e "${GREEN}${INSTALADO//\$app/$app}${NC}"
   else
     version=$(terraform -v | head -n 1 | awk '{print $2}')
-    echo -e "✅ ${GREEN}Terraform $version ya está instalado${NC}"
+    echo -e "${GREEN}${EXISTE//\$app/$app $version}${NC}"
   fi
 }
 function inst_minikube() {
-  echo -e "💬 ${BLUE}## Verificando Minikube ##${NC}"
+  app="Minikube"
+  echo -e "${BLUE}${TITULO//\$app/$app}${NC}"
   if ! command -v minikube &> /dev/null; then
-    echo -e "🚨 ${BLUE}Minikube no esta instalado${NC}"
+    echo -e "${RED}${NOEXISTE//\$app/$app}${NC}"
     curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
     sudo install minikube-linux-amd64 /usr/local/bin/minikube
-    echo -e "✅ ${GREEN} Minikube se instalo satisfactoriamente${NC}"
+    echo -e "${GREEN}${INSTALADO//\$app/$app}${NC}"
     rm -f minikube-linux-amd64
   else
     version=$(minikube version --short)
-    echo -e "✅ ${GREEN}Minikube $version ya esta instalado${NC}"
+    echo -e "${GREEN}${EXISTE//\$app/$app $version}${NC}"
   fi
 }
 function inst_argo() {
-  echo -e "💬 ${BLUE}## Verificando ArgoCD ##${NC}"
+  app="ArgoCD"
+  echo -e "${BLUE}${TITULO//\$app/$app}${NC}"
   if ! command -v argo &> /dev/null; then
-    echo -e "🚨 ${BLUE}ArgoCD no esta instalado${NC}"
+    echo -e "${RED}${NOEXISTE//\$app/$app}${NC}"
     curl -sLO https://github.com/argoproj/argo/releases/latest/download/argo-linux-amd64.gz
     gunzip -f argo-linux-amd64.gz
     sudo mv argo-linux-amd64 /usr/local/bin/argo
     sudo chmod +x /usr/local/bin/argo
-    echo -e "✅ ${GREEN} ArgoCD se instalo satisfactoriamente${NC}"
+    echo -e "${GREEN}${INSTALADO//\$app/$app}${NC}"
   else
     version=$(argo version --short | awk '{print $2}')
-    echo -e "✅ ${GREEN}ArgoCD $version ya esta instalado${NC}"
+    echo -e "${GREEN}${EXISTE//\$app/$app $version}${NC}"
   fi
 }
 function inst_helm() {
-  echo -e "💬 ${BLUE}## Verificando Helm ##${NC}"
+  app="Helm"
+  echo -e "${BLUE}${TITULO//\$app/$app}${NC}"
   if ! command -v helm &> /dev/null; then
-    echo -e "🚨 ${RED}helm no esta instalado${NC}"
+    echo -e "${RED}${NOEXISTE//\$app/$app}${NC}"
     local helm_script="/tmp/get_helm.sh"
     curl -fsSL -o "$helm_script" https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
     chmod 700 "$helm_script"
     sudo "$helm_script"
     rm -f "$helm_script"
-    echo -e "✅ ${GREEN}helm se instalo satisfactoriamente${NC}"
+    echo -e "${GREEN}${INSTALADO//\$app/$app}${NC}"
   else
     version=$(helm version --short)
-    echo -e "✅ ${GREEN}Helm $version ya esta instalado${NC}"
+    echo -e "${GREEN}${EXISTE//\$app/$app $version}${NC}"
   fi
 }
 function inst_azure() {
-  echo -e "💬 ${BLUE}## Verificando Azure CLI ##${NC}"
+  app="AzureCli"
+  echo -e "${BLUE}${TITULO//\$app/$app}${NC}"
   if ! command -v az &> /dev/null; then
-    echo -e "🚨 ${RED}Azure CLI no esta instalado${NC}"
+    echo -e "${RED}${NOEXISTE//\$app/$app}${NC}"
     sudo mkdir -p /etc/apt/keyrings
     curl -sLS https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor -o /etc/apt/keyrings/microsoft.gpg
     sudo chmod go+r /etc/apt/keyrings/microsoft.gpg
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/azure-cli/ jammy main" | sudo tee /etc/apt/sources.list.d/azure-cli.list > /dev/null
-    sudo apt update && sudo apt install -f azure-cli -y
-    echo -e "✅ ${BLUE}Instalando kubelogin${NC}"
+    sudo apt update && sudo apt install -f azure-cli -y && sleep 3
+    echo -e "${GREEN}${INSTALADO//\$app/$app}${NC}"
     sudo az aks install-cli
-    echo -e "✅ ${GREEN}Azure CLI se instalo satisfactoriamente${NC}"
+    echo -e "✅ ${GREEN}Azure kubelogin fue instalado{NC}"
   else
-    echo -e "✅ ${GREEN}Azure CLI ya esta instalado${NC}"
+    echo -e "${GREEN}${EXISTE//\$app/$app $version}${NC}"
   fi
 }
-function inst_ghcli() {  
-  echo -e "${BLUE}## Verificando GitHub CLI ##${NC}"
+function inst_ghcli() { 
+  app="GithubCli" 
+  echo -e "${BLUE}${TITULO//\$app/$app}${NC}"
   if ! command -v gh &> /dev/null; then
-    echo -e "🔴 ${RED}GitHub CLI no está instalado${NC}"
+    echo -e "${RED}${NOEXISTE//\$app/$app}${NC}"
     out=$(mktemp) && wget -nv -O$out https://cli.github.com/packages/githubcli-archive-keyring.gpg
     cat $out | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null
     sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
     sudo apt update && sudo apt install gh -y
-    echo -e "🚀 ${GREEN}GitHub CLI se instaló satisfactoriamente${NC}"
-  else
-    version=$(gh version | head -n 1 | awk '{print $3}')
-    echo -e "📣 ${GREEN}GitHub CLI $version ya está instalado${NC}"
-  fi
-}
-function inst_awscli() {
-  app="awscli"
-  version=$(aws --version | awk '{print $1}')
-  echo -e "${BLUE}${TITULO//\$app/$app}${NC}"
-  if ! command -v aws &> /dev/null; then
-    echo -e "${RED}${NOEXISTE//\$app/$app}${NC}"
-    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-    unzip awscliv2.zip && sudo ./aws/install
-    rm -rf ./aws && rm -f awscliv2.zip
     echo -e "${GREEN}${INSTALADO//\$app/$app}${NC}"
   else
+    version=$(gh version | head -n 1 | awk '{print $3}')
     echo -e "${GREEN}${EXISTE//\$app/$app $version}${NC}"
   fi
 }
@@ -217,14 +211,14 @@ function inst_lens() {
   app="Lens Desktop"
   echo -e "${BLUE}${TITULO//\$app/$app}${NC}"
   if ! type lens-desktop &> /dev/null; then
-    echo -e "🔴 ${RED}${NOEXISTE//\$app/$app}${NC}"
+    echo -e "${RED}${NOEXISTE//\$app/$app}${NC}"
     curl -fsSL https://downloads.k8slens.dev/keys/gpg | sudo gpg --dearmor -o /usr/share/keyrings/lens-archive-keyring.gpg
     echo "deb [arch=amd64 signed-by=/usr/share/keyrings/lens-archive-keyring.gpg] https://downloads.k8slens.dev/apt/debian stable main" | sudo tee /etc/apt/sources.list.d/lens.list > /dev/null
     sudo apt update && sudo apt install lens -y
-    echo -e "🚀 ${GREEN}${INSTALADO//\$app/$app}${NC}"
+    echo -e "${GREEN}${INSTALADO//\$app/$app}${NC}"
   else
     version=$(apt show lens 2>/dev/null | grep '^Version:' | awk '{print $2}')
-    echo -e "📣 ${GREEN}${EXISTE//\$app/$app $version}${NC}"
+    echo -e "${GREEN}${EXISTE//\$app/$app $version}${NC}"
   fi
 }
 function inst_code() {
@@ -386,7 +380,7 @@ function inst_ohmyzsh() {
   fi
 }
 
-## funciones agurpadas ##
+## funciones agrupadas ##
 function func_inst_devops() {
   inst_kube
   inst_minikube
