@@ -12,7 +12,7 @@ ffmpeg
 vlc
 ttf-mscorefonts-installer
 fonts-ubuntu
-dnsutils
+bind9-dnsutils
 keepassxc
 obs-studio
 yaru-theme-icon
