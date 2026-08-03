@@ -67,13 +67,15 @@ function test_func() {
   app="FakeApp"
   echo -e "${GREEN}Funcion de test. No hace nada.${NC}"
   ## test: titulo  
-  echo -e "💬${BLUE}${TITULO//\$app/$app}${NC}" && sleep 3
+  echo -e "${BLUE}${TITULO//\$app/$app}${NC}" && sleep 3
   ## test: no existe
-  echo -e "🚨 ${RED}${NOEXISTE//\$app/$app}${NC}" && sleep 3
+  echo -e "${RED}${NOEXISTE//\$app/$app}${NC}" && sleep 3
   ## test: instalado
-  echo -e "✅ ${GREEN}${INSTALADO//\$app/$app}${NC}" && sleep 3
+  echo -e "${GREEN}${INSTALADO//\$app/$app}${NC}" && sleep 3
   ## test: ya existe
-  echo -e "✅ ${GREEN}${EXISTE//\$app/$app $version}${NC}" && sleep 3
+  echo -e "${GREEN}${EXISTE//\$app/$app}${NC}" && sleep 3
+  ## test:
+  echo -e "${YELLOW}${EXISTE}${NC}" && sleep 3
 }
 
 ## === Func Aplicaciones === 
