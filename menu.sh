@@ -223,18 +223,18 @@ function inst_lens() {
 }
 function inst_code() {
   app="VSCode"
-  version=$(code --version | head -1)
   echo -e "${BLUE}${TITULO//\$app/$app}${NC}"
-  if command -v code &> /dev/null; then
-    echo -e "${GREEN}${EXISTE//\$app/$app $version}${NC}"
-  else
+  if ! type code &> /dev/null; then
     echo -e "${RED}${NOEXISTE//\$app/$app}${NC}"
     wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
     sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
     echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list > /dev/null
     rm -f packages.microsoft.gpg
-    sudo apt update && sudo apt install code -y
+    sudo apt-get update && sudo apt-get install code -y
     echo -e "${GREEN}${INSTALADO//\$app/$app}${NC}"
+  else
+    version=$(code --version | head -1)
+    echo -e "${GREEN}${EXISTE//\$app/$app $version}${NC}"
   fi
 }
 function inst_flatpak() {
